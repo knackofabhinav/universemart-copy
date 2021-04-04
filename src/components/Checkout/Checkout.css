@@ -1,0 +1,39 @@
+.checkout-container{
+    /* margin-top: 11vh; */
+    /* margin-left: 1rem; */
+}
+
+ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    /* margin: 1rem; */
+}
+
+.address > li{
+    display: flex;
+    padding: 1rem;
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.address > li:hover{
+    background-color: rgb(233, 233, 233);
+}
+
+label{
+    margin: 1rem;
+}
+
+.price-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.charges{
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 1rem;
+}

@@ -1,0 +1,7 @@
+.cardlisting{
+    min-height: 90vh;
+}
+
+.card{
+    max-height: 35rem;
+}
