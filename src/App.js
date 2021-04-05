@@ -8,6 +8,7 @@ import { Wishlist } from "./components/Wishlist/Wishlist";
 import { ProductPage } from "./components/Product Page/ProductPage";
 import { useDataContext } from "./contexts/dataContext";
 import { Checkout } from "./components/Checkout/Checkout";
+import { Homepage } from "./components/Homepage/Homepage";
 const axios = require("axios");
 function App() {
   const {
@@ -31,16 +32,12 @@ function App() {
     <div className="App">
       <Navigation />
       <Routes>
-        <Route path="/" element={<ProductListing />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="wishlist" element={<Wishlist />} />
-        <Route path="productpage" element={<ProductPage />} />
+        <Route path="/products" element={<ProductListing />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/productpage" element={<ProductPage />} />
+        <Route path="/" element={<Homepage />}/>
       </Routes>
-      {route === "products" && <ProductListing />}
-      {route === "cart" && <Cart />}
-      {route === "wishlist" && <Wishlist />}
-      {route === "productPage" && <ProductPage />}
-      {/*route==="checkout" && <Checkout/>*/}
     </div>
   );
 }

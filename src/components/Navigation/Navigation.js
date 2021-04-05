@@ -21,12 +21,12 @@ export const Navigation = () => {
       </a>
       <ul>
         <li>
-          <Link to="/" style={isDark ? dark : light}>
+          <Link to="/products" style={isDark ? dark : light}>
             <p>Products</p>
           </Link>
         </li>
         <li>
-          <Link to="cart" style={isDark ? dark : light}>
+          <Link to="/cart" style={isDark ? dark : light}>
             <div className="badge-container">
               <i className="fas fa-shopping-cart"></i>
               <div className="badge">{cart.length}</div>
@@ -34,7 +34,7 @@ export const Navigation = () => {
           </Link>
         </li>
         <li>
-          <Link to="wishlist" style={isDark ? dark : light}>
+          <Link to="/wishlist" style={isDark ? dark : light}>
             <i className="fas fa-heart"></i>
           </Link>
         </li>

@@ -22,7 +22,17 @@
 }
 
 
-
+.card {
+    padding: 1rem;
+    width: 20rem;
+    max-width: none;
+    height: auto;
+    margin: 1rem;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    display: flex;
+    justify-content: space-between;
+}
 
 .card:hover {
     box-shadow: 10px 5px 12px -4px rgba(141, 136, 136, 0.64);
@@ -38,11 +48,6 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    /* display:inline-block; */
-    /* white-space: nowrap; */
-    /* word-wrap: break-word; */
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
 }
 
 .image {
@@ -53,6 +58,10 @@
 .price {
     text-align: center;
     font-weight: bolder;
+}
+
+.out-of-stock {
+    margin: 1rem;
 }
 
 

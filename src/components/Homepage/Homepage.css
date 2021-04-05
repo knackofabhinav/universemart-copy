@@ -1,0 +1,12 @@
+.banner{
+    width: 100vw;
+    cursor: pointer;
+}
+
+.homepage-container{
+    margin-top: 10vh;
+}
+
+.banner-grid{
+    width: 50vw;
+}
