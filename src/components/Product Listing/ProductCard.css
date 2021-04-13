@@ -34,6 +34,11 @@
     justify-content: space-between;
 }
 
+.link-productcard{
+    text-decoration: none;
+    
+}
+
 .card:hover {
     box-shadow: 10px 5px 12px -4px rgba(141, 136, 136, 0.64);
 }

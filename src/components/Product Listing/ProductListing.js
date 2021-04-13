@@ -20,7 +20,6 @@ export const ProductListing = () => {
     },
     dispatch,
   } = useDataContext();
-
   function getSortedData(productList, sortBy) {
     if (sortBy && sortBy === "PRICE_HIGH_TO_LOW") {
       return productlist.sort((a, b) => b["price"] - a["price"]);
@@ -96,7 +95,7 @@ export const ProductListing = () => {
         </label>
       </fieldset>
       <ul className="cardlisting">
-        {filteredData.map((item) => <ProductCard item={item}/>)}
+        {filteredData.map((item) => <Link to={`/product/${item.id}`}><ProductCard item={item}/></Link>)}
       </ul>
       {addedToCartToast && <p className="toast-container">Added To Cart</p>}
       {addedToWishlistToast && (
