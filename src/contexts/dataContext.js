@@ -12,7 +12,14 @@ const reducer = (state, action) => {
     case "ADD_TO_CART":
       return {
         ...state,
-        cart: Array.from(new Set([...state.cart, action.payload])),
+        cart: action.payload.map((cartItem) => ({
+          ...cartItem,
+          product: {
+            ...state.productlist.find(
+              (product) => product._id === cartItem.product
+            ),
+          },
+        })),
         addedToCartToast: true,
       };
     case "HIDE_CART_TOAST":
@@ -20,29 +27,17 @@ const reducer = (state, action) => {
         ...state,
         addedToCartToast: false,
       };
-    case "INCREMENT_CART_QUANTITY":
+    case "UPDATE_CART_QUANTITY":
       return {
         ...state,
-        cart: state.cart.map((item) =>
-          item.id === action.payload.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
-        ),
-      };
-    case "DECREMENT_CART_QUANTITY":
-      return {
-        ...state,
-        cart: state.cart.map((item) =>
-          item.id === action.payload.id
-            ? {
-                ...item,
-                quantity: item.quantity - 1,
-              }
-            : item
-        ),
+        cart: action.payload.map((cartItem) => ({
+          ...cartItem,
+          product: {
+            ...state.productlist.find(
+              (product) => product._id === cartItem.product
+            ),
+          },
+        })),
       };
     case "REMOVE_ITEM_FROM_CART":
       return {
@@ -52,7 +47,11 @@ const reducer = (state, action) => {
     case "ADD_TO_WISHLIST":
       return {
         ...state,
-        wishlist: Array.from(new Set([...state.wishlist, action.payload])),
+        wishlist: [
+          ...state.productlist.filter((product) =>
+            action.payload.includes(product._id)
+          ),
+        ],
         addedToWishlistToast: true,
       };
     case "HIDE_WISHLIST_TOAST":
@@ -119,6 +118,41 @@ const reducer = (state, action) => {
         ...state,
         sortBy: action.payload,
       };
+    case "LOGGED_IN":
+      return {
+        ...state,
+        cart: action.payload.cart.map((cartItem) => ({
+          ...cartItem,
+          product: {
+            ...state.productlist.find(
+              (product) => product._id === cartItem.product
+            ),
+          },
+        })),
+        wishlist: [
+          ...state.productlist.filter((product) =>
+            action.payload.wishlist.includes(product._id)
+          ),
+        ],
+        userId: action.payload.userId,
+      };
+    case "LOGGED_OUT":
+      return {
+        ...state,
+        cart: [],
+        wishlist: [],
+        userId: null,
+      };
+    case "ALREADY_EXISTS":
+      return {
+        ...state,
+        alreadyExists: true,
+      };
+    case "HIDE_ALREADY_EXIST":
+      return {
+        ...state,
+        alreadyExists: false,
+      };
     default:
       break;
   }
@@ -137,6 +171,8 @@ const initialState = {
   showAllInventory: true,
   showFastDeliveryOnly: false,
   sortBy: null,
+  userId: null,
+  alreadyExists: false,
 };
 
 export const DataProvider = ({ children }) => {

@@ -11,7 +11,7 @@ export const Homepage = () => {
     isDark,
   } = useTheme();
   return (
-    <div class="homepage-container" style={isDark ? dark : light}>
+    <div className="homepage-container" style={isDark ? dark : light}>
       <Link to="/products">
         <img className="banner" src={Banner} alt="banner" />
       </Link>

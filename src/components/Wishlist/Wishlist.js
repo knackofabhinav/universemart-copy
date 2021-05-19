@@ -1,5 +1,6 @@
 import { useDataContext } from "../../contexts/dataContext";
 import { useTheme } from "../../contexts/theme-context";
+import { instance } from "../../App";
 import "./Wishlist.css";
 
 export const Wishlist = () => {
@@ -8,16 +9,26 @@ export const Wishlist = () => {
     isDark,
   } = useTheme();
   const {
-    state: { wishlist, addedToCartToast, cart },
+    state: { wishlist, addedToCartToast, userId, cart },
     dispatch,
   } = useDataContext();
+
+  const removeFromWishlist = async (item) => {
+    try {
+      const res = await instance.delete(`/wishlist/${userId}/${item._id}`);
+      dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container">
       <ul className="cardlisting" style={isDark ? dark : light}>
         {wishlist.map((item) => {
           return (
             <div
-              key={item.id}
+              key={item._id}
               className="card"
               style={isDark ? dark : light}
               onClick={() =>
@@ -33,7 +44,8 @@ export const Wishlist = () => {
                   className="close"
                   onClick={(e) => {
                     e.stopPropagation();
-                    dispatch({ type: "REMOVE_FROM_WISHLIST", payload: item });
+                    removeFromWishlist(item);
+                    // dispatch({ type: "REMOVE_FROM_WISHLIST", payload: item });
                   }}
                 >
                   X

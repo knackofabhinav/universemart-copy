@@ -78,6 +78,8 @@ fieldset {
     justify-content: center;
     display: flex;
     margin: 1rem;
+    height: 4rem;
+    align-items: center;
 }
 
 legend {

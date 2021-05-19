@@ -95,7 +95,17 @@ export const ProductListing = () => {
         </label>
       </fieldset>
       <ul className="cardlisting">
-        {filteredData.map((item) => <Link to={`/product/${item.id}`}><ProductCard item={item}/></Link>)}
+        {filteredData.map((item) => {
+          return (
+            <Link
+              key={item._id}
+              style={{ textDecoration: "none" }}
+              to={`/products/${item._id}`}
+            >
+              <ProductCard item={item} />
+            </Link>
+          );
+        })}
       </ul>
       {addedToCartToast && <p className="toast-container">Added To Cart</p>}
       {addedToWishlistToast && (

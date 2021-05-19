@@ -4,17 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "./contexts/theme-context";
-import { setupMockServer } from "./api/server";
 import { DataProvider } from "./contexts/dataContext";
+import { AuthProvider } from "./contexts/authContext";
 import { BrowserRouter as Router } from "react-router-dom";
-setupMockServer();
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider>
       <DataProvider>
         <Router>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </Router>
       </DataProvider>
     </ThemeProvider>
