@@ -14,7 +14,7 @@ import { PrivateRoute } from "./components/Private Route/PrivateRoute";
 const axios = require("axios");
 
 export const instance = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://limitless-bayou-73813.herokuapp.com/",
 });
 
 function App() {
