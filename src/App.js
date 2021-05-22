@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import "./App.css";
-import { Cart } from "./components/Cart/Cart";
+import { Cart } from "./pages/Cart/Cart";
 import { Routes, Route } from "react-router-dom";
-import { Navigation } from "./components/Navigation/Navigation";
-import { ProductListing } from "./components/Product Listing/ProductListing";
+import { NavBar } from "./components/Navigation/NavBar";
+import { ProductListing } from "./pages/Product Listing/ProductListing";
 import { Wishlist } from "./components/Wishlist/Wishlist";
-import { ProductPage } from "./components/Product Page/ProductPage";
+import { ProductPage } from "./pages/Product Page/ProductPage";
 import { useDataContext } from "./contexts/dataContext";
-import { Homepage } from "./components/Homepage/Homepage";
-import { Login } from "./components/Login Page/Login";
-import { Signup } from "./components/Signup/Signup";
+import { Homepage } from "./pages/Homepage/Homepage";
+import { Login } from "./pages/Login Page/Login";
+import { Signup } from "./pages/Signup/Signup";
 import { PrivateRoute } from "./components/Private Route/PrivateRoute";
 const axios = require("axios");
 
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navigation />
+      <NavBar />
       <Routes>
         <Route path="/products" element={<ProductListing />} />
         <PrivateRoute path="/cart" element={<Cart />} />

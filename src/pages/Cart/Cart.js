@@ -2,6 +2,9 @@ import { useDataContext } from "../../contexts/dataContext";
 import "./Cart.css";
 import { useTheme } from "../../contexts/theme-context";
 import { instance } from "../../App";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Toast } from "../../components/Toast/Toast";
 
 export const Cart = () => {
   const {
@@ -9,26 +12,33 @@ export const Cart = () => {
     dispatch,
   } = useDataContext();
 
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState("");
   async function increaseCartQuantity(item) {
     try {
+      setToastText("Updating Quantity...");
+      setShowToast(true);
       const newQuantity = item.quantity + 1;
       const dataFromServer = await instance.post("/cart", {
         userId: userId,
         productId: item.product._id,
         quantity: newQuantity,
       });
-      console.log(dataFromServer);
       dispatch({
         type: "UPDATE_CART_QUANTITY",
         payload: dataFromServer.data.cart,
       });
     } catch (error) {
+      setToastText("Failed to update...");
+      setShowToast(true);
       console.log(error);
     }
   }
 
   async function decreaseCartQuantity(item) {
     try {
+      setToastText("Updating Quantity...");
+      setShowToast(true);
       const newQuantity = item.quantity - 1;
       const dataFromServer = await instance.post("/cart", {
         userId: userId,
@@ -47,6 +57,8 @@ export const Cart = () => {
 
   async function removeFromCart(item) {
     try {
+      setToastText("Removing Item...");
+      setShowToast(true);
       const res = await instance.delete(`/cart/${userId}/${item._id}`);
       dispatch({
         type: "UPDATE_CART_QUANTITY",
@@ -72,12 +84,15 @@ export const Cart = () => {
         /-
       </h1>
       <ul className="cart-list">
-        {cart &&
-          cart.map((item) => {
-            return (
+        {cart.map((item) => {
+          return (
+            <Link
+              to={`/products/${item.product._id}`}
+              className="link-productcard link-cartcard"
+            >
               <li key={item.product._id}>
                 <div
-                  className="card text horizontal"
+                  className="cart-item text horizontal"
                   style={isDark ? dark : light}
                   onClick={() =>
                     dispatch({
@@ -102,6 +117,7 @@ export const Cart = () => {
                       <button
                         className="btn primary"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           increaseCartQuantity(item);
                         }}
@@ -113,6 +129,7 @@ export const Cart = () => {
                         className="btn primary"
                         disabled={item.quantity === 1 ? true : false}
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           decreaseCartQuantity(item);
                         }}
@@ -123,12 +140,9 @@ export const Cart = () => {
                     <button
                       className="btn secondary text"
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         removeFromCart(item);
-                        dispatch({
-                          type: "REMOVE_ITEM_FROM_CART",
-                          payload: item,
-                        });
                       }}
                     >
                       Remove
@@ -136,9 +150,24 @@ export const Cart = () => {
                   </div>
                 </div>
               </li>
-            );
-          })}
+            </Link>
+          );
+        })}
       </ul>
+      <Link
+        to="/products"
+        style={{ textDecoration: "none", marginBottom: "10rem" }}
+        className="btn primary"
+      >
+        View More Products
+      </Link>
+      {showToast && (
+        <Toast
+          showToast={showToast}
+          setShowToast={setShowToast}
+          text={toastText}
+        />
+      )}
     </div>
   );
 };

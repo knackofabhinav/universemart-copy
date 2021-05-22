@@ -1,3 +1,5 @@
+import loader from "../../assets/loading.svg";
+
 export const Loader = () => {
-  return <div>Loader</div>;
+  return <img src={loader} alt={"loading..."} />;
 };

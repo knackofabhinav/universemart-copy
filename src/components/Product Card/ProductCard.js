@@ -3,6 +3,9 @@ import { instance } from "../../App";
 import { useTheme } from "../../contexts/theme-context";
 import { useDataContext } from "../../contexts/dataContext";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../contexts/authContext";
+import { Toast } from "../Toast/Toast";
 
 export const ProductCard = ({ item }) => {
   const {
@@ -10,42 +13,60 @@ export const ProductCard = ({ item }) => {
     isDark,
   } = useTheme();
   const {
-    state: { cart, wishlist, userId, alreadyExists },
+    state: { cart, wishlist, userId },
     dispatch,
   } = useDataContext();
+  const { isUserLogin } = useAuth();
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState("");
 
   const addToWishlist = async (item) => {
-    try {
-      const res = await instance.post("/wishlist", {
-        userId,
-        productId: item._id,
-      });
-      if (res.data.success === false) {
-        dispatch({ type: "ALREADY_EXISTS" });
+    if (isUserLogin) {
+      try {
+        setToastText("Adding to wishlist...");
+        setShowToast(true);
+        const res = await instance.post("/wishlist", {
+          userId,
+          productId: item._id,
+        });
+        if (res.data.success === false) {
+          setToastText("Product Already Exist");
+          setShowToast(true);
+        }
+        if (res.data.success === true) {
+          dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
+          setToastText("Added to wishlist");
+          setShowToast(true);
+        }
+      } catch (error) {
+        console.log(error);
       }
-      if (res.data.success === true) {
-        dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
-      }
-      setTimeout(() => {
-        dispatch({ type: "HIDE_WISHLIST_TOAST" });
-        dispatch({ type: "HIDE_ALREADY_EXIST" });
-      }, 1000);
-    } catch (error) {
-      console.log(error);
+    } else {
+      setShowToast(true);
+      setToastText("Please Login");
     }
   };
 
   const addToCart = async (item) => {
-    try {
-      const res = await instance.post("/cart", {
-        userId: userId,
-        productId: item._id,
-        quantity: 1,
-      });
-      console.log(res.data.cart);
-      dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
-    } catch (error) {
-      console.log(error);
+    if (isUserLogin) {
+      try {
+        setToastText("Adding to cart...");
+        setShowToast(true);
+        const res = await instance.post("/cart", {
+          userId: userId,
+          productId: item._id,
+          quantity: 1,
+        });
+        setToastText(`added to cart`);
+        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
+      } catch (error) {
+        setShowToast(true);
+        setToastText("Failed To add...");
+        console.log(error);
+      }
+    } else {
+      setToastText("Please Login");
+      setShowToast(true);
     }
   };
   return (
@@ -104,18 +125,19 @@ export const ProductCard = ({ item }) => {
                 e.preventDefault();
                 e.stopPropagation();
                 addToCart(item);
-                setTimeout(() => {
-                  dispatch({ type: "HIDE_CART_TOAST" });
-                }, 3000);
               }}
             >
               {item.inStock ? "Add to Cart" : "Out Of Stock"}
             </button>
           )}
-          {alreadyExists && (
-            <p className="toast-container">Product Already Exists</p>
-          )}
         </div>
+        {showToast && (
+          <Toast
+            showToast={showToast}
+            setShowToast={setShowToast}
+            text={toastText}
+          />
+        )}
       </div>
     </Link>
   );

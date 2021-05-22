@@ -20,12 +20,10 @@ const reducer = (state, action) => {
             ),
           },
         })),
-        addedToCartToast: true,
       };
     case "HIDE_CART_TOAST":
       return {
         ...state,
-        addedToCartToast: false,
       };
     case "UPDATE_CART_QUANTITY":
       return {
@@ -39,11 +37,6 @@ const reducer = (state, action) => {
           },
         })),
       };
-    case "REMOVE_ITEM_FROM_CART":
-      return {
-        ...state,
-        cart: state.cart.filter((item) => item.id !== action.payload.id),
-      };
     case "ADD_TO_WISHLIST":
       return {
         ...state,
@@ -52,19 +45,6 @@ const reducer = (state, action) => {
             action.payload.includes(product._id)
           ),
         ],
-        addedToWishlistToast: true,
-      };
-    case "HIDE_WISHLIST_TOAST":
-      return {
-        ...state,
-        addedToWishlistToast: false,
-      };
-    case "REMOVE_FROM_WISHLIST":
-      return {
-        ...state,
-        wishlist: state.wishlist.filter(
-          (wishlisted) => wishlisted.id !== action.payload.id
-        ),
       };
     case "LOAD_THIS_ITEM_ON_PRODUCT_PAGE":
       return {
@@ -143,16 +123,6 @@ const reducer = (state, action) => {
         wishlist: [],
         userId: null,
       };
-    case "ALREADY_EXISTS":
-      return {
-        ...state,
-        alreadyExists: true,
-      };
-    case "HIDE_ALREADY_EXIST":
-      return {
-        ...state,
-        alreadyExists: false,
-      };
     default:
       break;
   }
@@ -165,14 +135,11 @@ const initialState = {
   productPage: {},
   route: "products",
   wishlist: [],
-  addedToCartToast: false,
   totalPrice: 0,
-  addedToWishlistToast: false,
-  showAllInventory: true,
+  showAllInventory: false,
   showFastDeliveryOnly: false,
   sortBy: null,
   userId: null,
-  alreadyExists: false,
 };
 
 export const DataProvider = ({ children }) => {

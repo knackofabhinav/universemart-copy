@@ -1,7 +1,12 @@
-.cardlisting{
-    min-height: 90vh;
+.cardlisting {
+    min-height: 100vh;
+
 }
 
-.card{
-    max-height: 35rem;
+.wishlist-container {
+    margin-top: 10vh;
+}
+
+.wishlist-item:hover {
+    box-shadow: 10px 5px 12px -4px rgba(141, 136, 136, 0.64);
 }

@@ -1,4 +1,4 @@
-import "./Navigation.css";
+import "./NavBar.css";
 import DarkLogo from "../../assets/Logo/Universe-logo.png";
 import LightLogo from "../../assets/Logo/Universe-logo-white.png";
 import { useTheme } from "../../contexts/theme-context";
@@ -6,7 +6,7 @@ import { useDataContext } from "../../contexts/dataContext";
 import { Link } from "react-router-dom";
 import { instance } from "../../App";
 import { useAuth } from "../../contexts/authContext";
-export const Navigation = () => {
+export const NavBar = () => {
   const {
     state: { cart, userId },
     dispatch,
