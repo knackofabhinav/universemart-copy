@@ -1,133 +1,15 @@
-import { createContext, useContext, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useState,
+  useEffect,
+} from "react";
+import { reducer } from "../reducer/data-reducer";
+import { instance } from "../App";
+import { useAuth } from "./authContext";
 
 const DataContext = createContext();
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "ADDING_DATA_TO_PRODUCTLIST":
-      return {
-        ...state,
-        productlist: action.payload,
-      };
-    case "ADD_TO_CART":
-      return {
-        ...state,
-        cart: action.payload.map((cartItem) => ({
-          ...cartItem,
-          product: {
-            ...state.productlist.find(
-              (product) => product._id === cartItem.product
-            ),
-          },
-        })),
-      };
-    case "HIDE_CART_TOAST":
-      return {
-        ...state,
-      };
-    case "UPDATE_CART_QUANTITY":
-      return {
-        ...state,
-        cart: action.payload.map((cartItem) => ({
-          ...cartItem,
-          product: {
-            ...state.productlist.find(
-              (product) => product._id === cartItem.product
-            ),
-          },
-        })),
-      };
-    case "ADD_TO_WISHLIST":
-      return {
-        ...state,
-        wishlist: [
-          ...state.productlist.filter((product) =>
-            action.payload.includes(product._id)
-          ),
-        ],
-      };
-    case "LOAD_THIS_ITEM_ON_PRODUCT_PAGE":
-      return {
-        ...state,
-        productPage: action.payload,
-        route: "productPage",
-      };
-    case "CHANGE_ROUTE_TO_PRODUCTS":
-      return {
-        ...state,
-        route: "products",
-      };
-    case "CHANGE_ROUTE_TO_CART":
-      return {
-        ...state,
-        route: "cart",
-      };
-    case "CHANGE_ROUTE_TO_WISHLIST":
-      return {
-        ...state,
-        route: "wishlist",
-      };
-    case "CHANGE_ROUTE_TO_CHECKOUT":
-      return {
-        ...state,
-        route: "checkout",
-      };
-    case "PRICE_HIGH_TO_LOW":
-      return {
-        ...state,
-        productlist: [...state.productlist].sort((a, b) => b.price - a.price),
-      };
-    case "PRICE_LOW_TO_HIGH":
-      return {
-        ...state,
-        productlist: [...state.productlist].sort((a, b) => a.price - b.price),
-      };
-    case "TOGGLE_INVENTORY":
-      return (state = {
-        ...state,
-        showAllInventory: !state.showAllInventory,
-      });
-
-    case "TOGGLE_DELIVERY":
-      return (state = {
-        ...state,
-        showFastDeliveryOnly: !state.showFastDeliveryOnly,
-      });
-    case "SORT":
-      return {
-        ...state,
-        sortBy: action.payload,
-      };
-    case "LOGGED_IN":
-      return {
-        ...state,
-        cart: action.payload.cart.map((cartItem) => ({
-          ...cartItem,
-          product: {
-            ...state.productlist.find(
-              (product) => product._id === cartItem.product
-            ),
-          },
-        })),
-        wishlist: [
-          ...state.productlist.filter((product) =>
-            action.payload.wishlist.includes(product._id)
-          ),
-        ],
-        userId: action.payload.userId,
-      };
-    case "LOGGED_OUT":
-      return {
-        ...state,
-        cart: [],
-        wishlist: [],
-        userId: null,
-      };
-    default:
-      break;
-  }
-  return state;
-};
 
 const initialState = {
   productlist: [],
@@ -143,12 +25,97 @@ const initialState = {
 };
 
 export const DataProvider = ({ children }) => {
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { isUserLogin } = useAuth();
+
+  useEffect(() => {
+    const loginCredentials = JSON.parse(localStorage?.getItem("credentials"));
+    if (loginCredentials && state.userId === null) {
+      (async function () {
+        try {
+          const res = await instance.post("/login", {
+            username: loginCredentials.username,
+            password: loginCredentials.password,
+          });
+          console.log(res.data.user);
+          dispatch({ type: "LOGGED_IN", payload: res.data.user });
+        } catch (err) {
+          console.log("no credentials found");
+        }
+      })();
+    }
+  }, [dispatch, state.userId]);
+
+  const addToWishlist = async (item) => {
+    try {
+      setToastText("Adding to wishlist...");
+      setShowToast(true);
+      const res = await instance.post("/wishlist", {
+        userId: state.userId,
+        productId: item._id,
+      });
+      if (res.data.success === false) {
+        setToastText("Product Already Exist");
+        setShowToast(true);
+      }
+      if (res.data.success === true) {
+        dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
+        setToastText("Added to wishlist");
+        setShowToast(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeFromWishlist = async (item) => {
+    try {
+      const res = await instance.delete(
+        `/wishlist/${state.userId}/${item._id}`
+      );
+      dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addToCart = async (item) => {
+    if (isUserLogin) {
+      try {
+        setToastText("Adding to cart...");
+        setShowToast(true);
+        const res = await instance.post("/cart", {
+          userId: state.userId,
+          productId: item._id,
+          quantity: 1,
+        });
+        setToastText(`added to cart`);
+        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
+      } catch (error) {
+        setShowToast(true);
+        setToastText("Failed To add...");
+        console.log(error);
+      }
+    } else {
+      setToastText("Please Login");
+      setShowToast(true);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
         state,
         dispatch,
+        addToWishlist,
+        showToast,
+        setShowToast,
+        setToastText,
+        toastText,
+        removeFromWishlist,
+        addToCart,
       }}
     >
       {children}

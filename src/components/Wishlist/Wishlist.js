@@ -1,10 +1,7 @@
 import { useDataContext } from "../../contexts/dataContext";
 import { useTheme } from "../../contexts/theme-context";
-import { instance } from "../../App";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import "./Wishlist.css";
-import { useAuth } from "../../contexts/authContext";
 
 export const Wishlist = () => {
   const {
@@ -12,44 +9,11 @@ export const Wishlist = () => {
     isDark,
   } = useTheme();
   const {
-    state: { wishlist, addedToCartToast, userId, cart },
+    state: { wishlist, cart },
     dispatch,
+    removeFromWishlist,
+    addToCart,
   } = useDataContext();
-  const { isUserLogin } = useAuth();
-  const [showToast, setShowToast] = useState(false);
-  const [toastText, setToastText] = useState("");
-
-  const removeFromWishlist = async (item) => {
-    try {
-      const res = await instance.delete(`/wishlist/${userId}/${item._id}`);
-      dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const addToCart = async (item) => {
-    if (isUserLogin) {
-      try {
-        setToastText("Adding to cart...");
-        setShowToast(true);
-        const res = await instance.post("/cart", {
-          userId: userId,
-          productId: item._id,
-          quantity: 1,
-        });
-        setToastText(`added to cart`);
-        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
-      } catch (error) {
-        setShowToast(true);
-        setToastText("Failed To add...");
-        console.log(error);
-      }
-    } else {
-      setToastText("Please Login");
-      setShowToast(true);
-    }
-  };
 
   return (
     <div className="wishlist-container">

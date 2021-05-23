@@ -10,15 +10,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <DataProvider>
-        <Router>
-          <AuthProvider>
+    <Router>
+      <ThemeProvider>
+        <AuthProvider>
+          <DataProvider>
             <App />
-          </AuthProvider>
-        </Router>
-      </DataProvider>
-    </ThemeProvider>
+          </DataProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

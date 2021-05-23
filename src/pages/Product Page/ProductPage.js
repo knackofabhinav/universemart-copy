@@ -5,7 +5,6 @@ import { instance } from "../../App";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Toast } from "../../components/Toast/Toast";
-import { useAuth } from "../../contexts/authContext";
 
 import "./ProductPage.css";
 export const ProductPage = () => {
@@ -14,63 +13,18 @@ export const ProductPage = () => {
     isDark,
   } = useTheme();
   const {
-    state: { cart, userId, productlist },
-    dispatch,
+    state: { cart, productlist },
+    addToCart,
+    addToWishlist,
+    showToast,
+    setShowToast,
+    toastText,
   } = useDataContext();
   const { id } = useParams();
-  const { isUserLogin } = useAuth();
-
-  const [showToast, setShowToast] = useState(false);
-  const [toastText, setToastText] = useState("");
 
   const getProductDetails = (productlist, id) =>
     productlist.find((product) => product._id === id);
   const product = getProductDetails(productlist, id);
-
-  const addToCart = async (item) => {
-    if (isUserLogin) {
-      try {
-        setToastText("Adding to cart...");
-        setShowToast(true);
-        const res = await instance.post("/cart", {
-          userId: userId,
-          productId: item._id,
-          quantity: 1,
-        });
-        setToastText(`added to cart`);
-        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
-      } catch (error) {
-        setShowToast(true);
-        setToastText("Failed To add...");
-        console.log(error);
-      }
-    } else {
-      setToastText("Please Login");
-      setShowToast(true);
-    }
-  };
-
-  const addToWishlist = async (item) => {
-    try {
-      setToastText("Adding to wishlist...");
-      setShowToast(true);
-      const res = await instance.post("/wishlist", {
-        userId,
-        productId: item._id,
-      });
-      if (res.data.success === false) {
-        setToastText("Product Already Exist");
-        setShowToast(true);
-      }
-      if (res.data.success === true) {
-        dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
-        setToastText("Added to wishlist");
-        setShowToast(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div>

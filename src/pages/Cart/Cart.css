@@ -43,7 +43,8 @@
 }
 
 .link-cartcard {
-    max-width: 90%;
+    width: 100%;
+    text-decoration: none;
 }
 
 .links {

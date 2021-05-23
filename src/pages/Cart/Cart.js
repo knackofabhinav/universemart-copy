@@ -14,6 +14,7 @@ export const Cart = () => {
 
   const [showToast, setShowToast] = useState(false);
   const [toastText, setToastText] = useState("");
+
   async function increaseCartQuantity(item) {
     try {
       setToastText("Updating Quantity...");
@@ -87,7 +88,7 @@ export const Cart = () => {
           return (
             <Link
               to={`/products/${item.product._id}`}
-              className="link-productcard link-cartcard"
+              className="link-cartcard"
             >
               <li key={item.product._id}>
                 <div

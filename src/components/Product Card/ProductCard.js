@@ -1,10 +1,7 @@
 import "./ProductCard.css";
-import { instance } from "../../App";
 import { useTheme } from "../../contexts/theme-context";
 import { useDataContext } from "../../contexts/dataContext";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useAuth } from "../../contexts/authContext";
 import { Toast } from "../Toast/Toast";
 
 export const ProductCard = ({ item }) => {
@@ -13,62 +10,14 @@ export const ProductCard = ({ item }) => {
     isDark,
   } = useTheme();
   const {
-    state: { cart, wishlist, userId },
-    dispatch,
+    state: { cart, wishlist },
+    addToWishlist,
+    showToast,
+    setShowToast,
+    toastText,
+    addToCart,
   } = useDataContext();
-  const { isUserLogin } = useAuth();
-  const [showToast, setShowToast] = useState(false);
-  const [toastText, setToastText] = useState("");
 
-  const addToWishlist = async (item) => {
-    if (isUserLogin) {
-      try {
-        setToastText("Adding to wishlist...");
-        setShowToast(true);
-        const res = await instance.post("/wishlist", {
-          userId,
-          productId: item._id,
-        });
-        if (res.data.success === false) {
-          setToastText("Product Already Exist");
-          setShowToast(true);
-        }
-        if (res.data.success === true) {
-          dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
-          setToastText("Added to wishlist");
-          setShowToast(true);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      setShowToast(true);
-      setToastText("Please Login");
-    }
-  };
-
-  const addToCart = async (item) => {
-    if (isUserLogin) {
-      try {
-        setToastText("Adding to cart...");
-        setShowToast(true);
-        const res = await instance.post("/cart", {
-          userId: userId,
-          productId: item._id,
-          quantity: 1,
-        });
-        setToastText(`added to cart`);
-        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
-      } catch (error) {
-        setShowToast(true);
-        setToastText("Failed To add...");
-        console.log(error);
-      }
-    } else {
-      setToastText("Please Login");
-      setShowToast(true);
-    }
-  };
   return (
     <Link to={`/products/${item._id}`} className="link-productcard">
       <div key={item._id} className="card" style={isDark ? dark : light}>

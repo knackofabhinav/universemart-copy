@@ -14,7 +14,8 @@ export const ProductListing = () => {
     state: { productlist, showAllInventory, showFastDeliveryOnly, sortBy },
     dispatch,
   } = useDataContext();
-  function getSortedData(productList, sortBy) {
+
+  function getSortedData(sortBy) {
     if (sortBy && sortBy === "PRICE_HIGH_TO_LOW") {
       return productlist.sort((a, b) => b["price"] - a["price"]);
     }
