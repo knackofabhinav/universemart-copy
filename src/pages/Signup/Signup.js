@@ -14,12 +14,12 @@ export const Signup = () => {
 
   const signupHandler = async (signupCredentials) => {
     try {
-      const response = await instance.post("/signup", {
-        username: signupCredentials.username,
-        password: signupCredentials.password,
-      });
-
-      setSuccessfulSignup(true);
+      const response = await instance
+        .post("/signup", {
+          username: signupCredentials.username,
+          password: signupCredentials.password,
+        })
+        .then(setSuccessfulSignup(true));
     } catch (e) {
       console.log(e);
     }

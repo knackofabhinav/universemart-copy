@@ -4,11 +4,10 @@ import LightLogo from "../../assets/Logo/Universe-logo-white.png";
 import { useTheme } from "../../contexts/theme-context";
 import { useDataContext } from "../../contexts/dataContext";
 import { Link } from "react-router-dom";
-import { instance } from "../../App";
 import { useAuth } from "../../contexts/authContext";
 export const NavBar = () => {
   const {
-    state: { cart, userId },
+    state: { cart },
     dispatch,
   } = useDataContext();
   const {

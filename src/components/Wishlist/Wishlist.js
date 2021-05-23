@@ -2,7 +2,9 @@ import { useDataContext } from "../../contexts/dataContext";
 import { useTheme } from "../../contexts/theme-context";
 import { instance } from "../../App";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import "./Wishlist.css";
+import { useAuth } from "../../contexts/authContext";
 
 export const Wishlist = () => {
   const {
@@ -13,6 +15,9 @@ export const Wishlist = () => {
     state: { wishlist, addedToCartToast, userId, cart },
     dispatch,
   } = useDataContext();
+  const { isUserLogin } = useAuth();
+  const [showToast, setShowToast] = useState(false);
+  const [toastText, setToastText] = useState("");
 
   const removeFromWishlist = async (item) => {
     try {
@@ -20,6 +25,29 @@ export const Wishlist = () => {
       dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const addToCart = async (item) => {
+    if (isUserLogin) {
+      try {
+        setToastText("Adding to cart...");
+        setShowToast(true);
+        const res = await instance.post("/cart", {
+          userId: userId,
+          productId: item._id,
+          quantity: 1,
+        });
+        setToastText(`added to cart`);
+        dispatch({ type: "ADD_TO_CART", payload: res.data.cart });
+      } catch (error) {
+        setShowToast(true);
+        setToastText("Failed To add...");
+        console.log(error);
+      }
+    } else {
+      setToastText("Please Login");
+      setShowToast(true);
     }
   };
 
@@ -55,27 +83,30 @@ export const Wishlist = () => {
                 </div>
                 <h4 className="name">{item.name}</h4>
                 <p className="price">₹ {item.price}/-</p>
-                {cart.find((cartItem) => cartItem.id === item.id) ? (
-                  <button
+                {cart.find((cartItem) => cartItem.product._id === item._id) ? (
+                  <Link
+                    to="/cart"
                     className="btn secondary"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      dispatch({ type: "CHANGE_ROUTE_TO_CART" });
+                    style={{
+                      display: "flex",
+                      textDecoration: "none",
+                      justifyContent: "center",
                     }}
                   >
                     Go To Cart
-                  </button>
+                  </Link>
                 ) : (
                   <button
-                    className="btn primary"
+                    className={item.inStock ? "btn primary" : "btn disabled"}
+                    style={{ width: "100%" }}
+                    disabled={!item.inStock}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      dispatch({ type: "ADD_TO_CART", payload: item });
+                      addToCart(item);
                     }}
                   >
-                    Add to Cart
+                    {item.inStock ? "Add to Cart" : "Out Of Stock"}
                   </button>
                 )}
               </div>

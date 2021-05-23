@@ -28,7 +28,6 @@ function App() {
           type: "ADDING_DATA_TO_PRODUCTLIST",
           payload: dataFromServer.data.products,
         });
-        console.log("Loaded...");
       } catch (error) {
         console.log(error);
       }

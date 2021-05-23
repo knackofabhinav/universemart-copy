@@ -45,7 +45,6 @@ export const Cart = () => {
         productId: item.product._id,
         quantity: newQuantity,
       });
-      console.log(dataFromServer);
       dispatch({
         type: "UPDATE_CART_QUANTITY",
         payload: dataFromServer.data.cart,
