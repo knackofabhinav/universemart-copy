@@ -1,12 +1,18 @@
-.banner{
-    width: 100vw;
+.banner {
+    width: 100%;
     cursor: pointer;
 }
 
-.homepage-container{
+.homepage-container {
     margin-top: 10vh;
 }
 
-.banner-grid{
-    width: 50vw;
+.banner-grid {
+    width: 48vw;
+}
+
+@media (min-width: 768px) {
+    .hide-banner {
+        display: none
+    }
 }
