@@ -10,6 +10,7 @@ import { useDataContext } from "./contexts/dataContext";
 import { Homepage } from "./pages/Homepage/Homepage";
 import { Login } from "./pages/Login Page/Login";
 import { Signup } from "./pages/Signup/Signup";
+import { useTheme } from "./contexts/theme-context";
 import { PrivateRoute } from "./components/Private Route/PrivateRoute";
 const axios = require("axios");
 
@@ -19,6 +20,7 @@ export const instance = axios.create({
 
 function App() {
   const { dispatch } = useDataContext();
+  const { isDark, dark, light } = useTheme();
 
   useEffect(() => {
     (async () => {
@@ -35,7 +37,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="App" style={isDark ? dark : light}>
       <NavBar />
       <Routes>
         <Route path="/products" element={<ProductListing />} />
