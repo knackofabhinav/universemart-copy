@@ -50,19 +50,24 @@ export const DataProvider = ({ children }) => {
 
   const addToWishlist = async (item) => {
     try {
-      setToastText("Adding to wishlist...");
-      setShowToast(true);
-      const res = await instance.post("/wishlist", {
-        userId: state.userId,
-        productId: item._id,
-      });
-      if (res.data.success === false) {
-        setToastText("Product Already Exist");
+      if (isUserLogin) {
+        setToastText("Adding to wishlist...");
         setShowToast(true);
-      }
-      if (res.data.success === true) {
-        dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
-        setToastText("Added to wishlist");
+        const res = await instance.post("/wishlist", {
+          userId: state.userId,
+          productId: item._id,
+        });
+        if (res.data.success === false) {
+          setToastText("Product Already Exist");
+          setShowToast(true);
+        }
+        if (res.data.success === true) {
+          dispatch({ type: "ADD_TO_WISHLIST", payload: res.data.wishlist });
+          setToastText("Added to wishlist");
+          setShowToast(true);
+        }
+      } else {
+        setToastText("Please Login");
         setShowToast(true);
       }
     } catch (error) {

@@ -75,14 +75,36 @@ export const Cart = () => {
   } = useTheme();
   return (
     <div style={isDark ? dark : light} className="cart-container">
-      <h1 className="total-amount">
-        Total Price: ₹{" "}
-        {cart.length > 0 &&
-          cart
-            .map((item) => item.quantity * item.product.price)
-            .reduce((acc, val) => acc + val)}
-        /-
-      </h1>
+      {cart.length !== 0 ? (
+        <h1 className="total-amount">
+          Total Price: ₹{" "}
+          {cart.length > 0 &&
+            cart
+              .map((item) => item.quantity * item.product.price)
+              .reduce((acc, val) => acc + val)}
+          /-
+        </h1>
+      ) : (
+        <h1
+          style={
+            isDark
+              ? {
+                  ...dark,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignText: "center",
+                }
+              : {
+                  ...light,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignText: "center",
+                }
+          }
+        >
+          Cart is Empty
+        </h1>
+      )}
       <ul className="cart-list">
         {cart.map((item) => {
           return (
@@ -93,7 +115,9 @@ export const Cart = () => {
               <li key={item.product._id}>
                 <div
                   className="cart-item text horizontal"
-                  style={isDark ? dark : light}
+                  style={
+                    isDark ? { ...dark, backgroundColor: "#121212" } : light
+                  }
                   onClick={() =>
                     dispatch({
                       type: "LOAD_THIS_ITEM_ON_PRODUCT_PAGE",

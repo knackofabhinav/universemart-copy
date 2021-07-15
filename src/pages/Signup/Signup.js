@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Signup";
 import { instance } from "../../App";
+import { useTheme } from "../../contexts/theme-context";
 import { Link } from "react-router-dom";
 
 export const Signup = () => {
@@ -12,6 +13,11 @@ export const Signup = () => {
     password: "",
   });
 
+  const {
+    theme: { dark, light },
+    isDark,
+  } = useTheme();
+
   const signupHandler = async (signupCredentials) => {
     try {
       const response = await instance
@@ -20,13 +26,14 @@ export const Signup = () => {
           password: signupCredentials.password,
         })
         .then(setSuccessfulSignup(true));
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" style={isDark ? dark : light}>
       <div className="login">
         <h2>Signup</h2>
         {successfulSignup && (

@@ -20,7 +20,11 @@ export const ProductCard = ({ item }) => {
 
   return (
     <Link to={`/products/${item._id}`} className="link-productcard">
-      <div key={item._id} className="card" style={isDark ? dark : light}>
+      <div
+        key={item._id}
+        className="card"
+        style={isDark ? { ...dark, backgroundColor: "#121212" } : light}
+      >
         <div className="thumbnail">
           <img className="image" src={item.image} alt="product" />
           <button
@@ -61,6 +65,7 @@ export const ProductCard = ({ item }) => {
                 display: "flex",
                 textDecoration: "none",
                 justifyContent: "center",
+                border: "1px solid white",
               }}
             >
               Go To Cart

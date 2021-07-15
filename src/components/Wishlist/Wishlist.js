@@ -17,6 +17,27 @@ export const Wishlist = () => {
 
   return (
     <div className="wishlist-container">
+      {wishlist.length === 0 && (
+        <h1
+          style={
+            isDark
+              ? {
+                  ...dark,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignText: "center",
+                }
+              : {
+                  ...light,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignText: "center",
+                }
+          }
+        >
+          Your Wishlist is empty
+        </h1>
+      )}
       <ul className="cardlisting" style={isDark ? dark : light}>
         {wishlist.map((item) => {
           return (
@@ -24,7 +45,7 @@ export const Wishlist = () => {
               <div
                 key={item._id}
                 className="card"
-                style={isDark ? dark : light}
+                style={isDark ? { ...dark, backgroundColor: "#121212" } : light}
                 onClick={() =>
                   dispatch({
                     type: "LOAD_THIS_ITEM_ON_PRODUCT_PAGE",
@@ -42,7 +63,7 @@ export const Wishlist = () => {
                       removeFromWishlist(item);
                     }}
                   >
-                    X
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
                 <h4 className="name">{item.name}</h4>

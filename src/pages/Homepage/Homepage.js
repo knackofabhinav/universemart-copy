@@ -23,9 +23,11 @@ export const Homepage = () => {
           <img className="banner-grid" src={Banner3} alt="banner" />
         </Link>
       </div>
-      <Link to="/products">
-        <img className="banner" src={Banner4} alt="banner" />
-      </Link>
+      {
+        <Link to="/products">
+          <img className="banner hide-banner" src={Banner4} alt="banner" />
+        </Link>
+      }
     </div>
   );
 };
