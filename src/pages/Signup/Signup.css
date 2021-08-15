@@ -7,8 +7,7 @@
     align-items: center;
 }
 
-.login{
-    padding: 2rem;
+.login {
     display: flex;
     flex-direction: column;
     align-items: center;
