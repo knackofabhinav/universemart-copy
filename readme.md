@@ -1,4 +1,4 @@
-# UniverMart - 
+# Universe Mart - An Ecommerce App
 E-Commerce App Based on MERN stack.
 
 ![](src/assets/Ecommerce.gif)
@@ -11,3 +11,7 @@ E-Commerce App Based on MERN stack.
 - Protected Routes.
 - State Management Using Context API.
 - Built Using my own Component Library.
+
+# Improvements
+- Add Payment Gateway.
+- UI Improvements
