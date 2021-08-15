@@ -2,6 +2,7 @@
 E-Commerce App Based on MERN stack.
 
 ![](src/assets/Ecommerce.gif)
+
 # Features -
 - Add/Remove from cart.
 - Light/Dark Mode.
