@@ -20,8 +20,8 @@ export const Login = () => {
     useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginCredentials, setLoginCredentials] = useState({
-    username: "",
-    password: "",
+    username: "admin",
+    password: "admin",
   });
 
   const loginHandler = async (loginCredentials) => {
@@ -57,12 +57,6 @@ export const Login = () => {
 
   return (
     <div className="login-container" style={isDark ? dark : light}>
-      <h5>
-        Demo Credentials: <br />
-        <br />
-        username: admin <br />
-        password: admin
-      </h5>
       <form className="login">
         <h2>Login</h2>
         {showWrongCredentialsAlert && (

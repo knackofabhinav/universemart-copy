@@ -178,10 +178,11 @@ export const Cart = () => {
           );
         })}
       </ul>
+      <button className="btn primary">Checkout</button>
       <Link
         to="/products"
         style={{ textDecoration: "none", marginBottom: "10rem" }}
-        className="btn primary"
+        className="btn secondary text"
       >
         View More Products
       </Link>
