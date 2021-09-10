@@ -17,6 +17,11 @@ export const reducer = (state, action) => {
           },
         })),
       };
+    case "CLEAR_CART":
+      return {
+        ...state,
+        cart: [],
+      };
     case "HIDE_CART_TOAST":
       return {
         ...state,

@@ -4,7 +4,7 @@ import { Cart } from "./pages/Cart/Cart";
 import { Routes, Route } from "react-router-dom";
 import { NavBar } from "./components/Navigation/NavBar";
 import { ProductListing } from "./pages/Product Listing/ProductListing";
-import { Wishlist } from "./components/Wishlist/Wishlist";
+import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { ProductPage } from "./pages/Product Page/ProductPage";
 import { useDataContext } from "./contexts/dataContext";
 import { Homepage } from "./pages/Homepage/Homepage";
@@ -15,7 +15,8 @@ import { PrivateRoute } from "./components/Private Route/PrivateRoute";
 const axios = require("axios");
 
 export const instance = axios.create({
-  baseURL: "https://limitless-bayou-73813.herokuapp.com/",
+  baseURL: "https://still-beyond-85781.herokuapp.com/",
+  // baseURL: "http://localhost:3000/",
 });
 
 function App() {
