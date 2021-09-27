@@ -1,0 +1,98 @@
+.cardlisting {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.close {
+    outline-style: inset;
+    outline: grey;
+    font-size: xx-large;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardlisting .fa-heart {
+    color: red;
+    font-size: large;
+}
+
+
+.card {
+    padding: 1rem;
+    margin: 1rem;
+    width: 15rem;
+    height: 28rem;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    display: flex;
+    justify-content: space-between;
+}
+
+.link-productcard {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.card:hover {
+    box-shadow: 10px 5px 12px -4px rgba(141, 136, 136, 0.64);
+}
+
+.thumbnail {
+    height: 15rem;
+    width: 100%;
+}
+
+.name {
+    margin: 1rem;
+    justify-content: center;
+
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+}
+
+.price {
+    text-align: center;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+.out-of-stock {
+    margin: 1rem;
+}
+
+
+.toast-container {
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.container {
+    margin-top: 10vh;
+}
+
+input {
+    margin: 0.5rem
+}
+
+fieldset {
+    justify-content: center;
+    display: flex;
+    margin: 1rem;
+}
+
+legend {
+    text-align: center;
+    color: var(--secondary-color);
+}

@@ -1,0 +1,12 @@
+.cardlisting {
+    min-height: 100vh;
+
+}
+
+.wishlist-container {
+    margin-top: 10vh;
+}
+
+.wishlist-item:hover {
+    box-shadow: 10px 5px 12px -4px rgba(141, 136, 136, 0.64);
+}
